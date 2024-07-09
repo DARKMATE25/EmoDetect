@@ -1,0 +1,143 @@
+<!-- app/templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            color: #fff; /* Set text color to white */
+        }
+
+        .dashboard-info {
+            flex: 1;
+            background: url('https://www.communityreachcenter.org/wp-content/uploads/2019/03/Col-No.-4-March.jpeg') no-repeat center center fixed; 
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            flex: 1;
+            background-color: #8B4513; /* Brown color */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px; /* Adjust the width as needed */
+            margin: 20px;
+            align-self: flex-start; /* Align the form to the left side */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff; /* White color for labels */
+        }
+
+        input {
+            width: calc(100% - 16px); /* Adjust the width as needed */
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        img.depression-image {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-info">
+        <h1>Welcome to the Admin Dashboard!</h1>
+   
+
+    <form id="emotionForm" onsubmit="submitForm(event)">
+        <label for="happyPercentage">Happy Percentage:</label>
+        <input type="number" id="happyPercentage" name="happyPercentage" min="0" max="100" required>
+        <br>
+
+        <label for="sadPercentage">Sad Percentage:</label>
+        <input type="number" id="sadPercentage" name="sadPercentage" min="0" max="100" required>
+        <br>
+
+        <label for="neutralPercentage">Neutral Percentage:</label>
+        <input type="number" id="neutralPercentage" name="neutralPercentage" min="0" max="100" required>
+        <br>
+
+        <label for="excitedPercentage">Excited Percentage:</label>
+        <input type="number" id="excitedPercentage" name="excitedPercentage" min="0" max="100" required>
+        <br>
+
+        <label for="fearPercentage">Fear Percentage:</label>
+        <input type="number" id="fearPercentage" name="fearPercentage" min="0" max="100" required>
+        <br>
+        
+        <label for="recipientEmail">Recipient Email:</label>
+        <input type="email" id="recipientEmail" name="recipientEmail" required>
+        <br>
+    
+        <button type="submit">Submit</button>
+    </form>
+</div>
+    <div class="dashboard-info">
+        <!-- Result of depression calculation will be displayed here -->
+        {% if result %}
+            <p>{{ result }}</p>
+        {% endif %}
+    </div>
+   
+    <script>
+        async function submitForm(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Get input values for each emotion
+            const happyPercentage = parseFloat(document.getElementById('happyPercentage').value) || 0;
+            const sadPercentage = parseFloat(document.getElementById('sadPercentage').value) || 0;
+            const neutralPercentage = parseFloat(document.getElementById('neutralPercentage').value) || 0;
+            const excitedPercentage = parseFloat(document.getElementById('excitedPercentage').value) || 0;
+            const fearPercentage = parseFloat(document.getElementById('fearPercentage').value) || 0;
+
+            // Assign weights based on the impact on depression
+            const weightedDepression = (sadPercentage + fearPercentage) - (happyPercentage + excitedPercentage);
+
+            // Calculate the depression percentage
+            const depressionPercentage = Math.max(0, weightedDepression); // Ensure depressionPercentage is non-negative
+
+            // Display the result (you can customize this part)
+            alert(`Depression Percentage: ${depressionPercentage.toFixed(2)}%`);
+        }
+    </script>
+</body>
+</html>
